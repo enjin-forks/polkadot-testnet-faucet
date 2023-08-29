@@ -4,9 +4,9 @@ This is a Enjin-testnet faucet. You can use this to load testnet tokens into you
 
 ## What is a faucet?
 
-A faucet is a developer tool to get a small amount of testnet tokens (<NETWORK-TOKEN>) in order to test and troubleshoot a decentralized application or protocol before going live on Polkadot, where one must use real DOT.
+A faucet is a developer tool to get a small amount of testnet tokens (<NETWORK-TOKEN>) in order to test and troubleshoot a decentralized application or protocol before going live on Enjin Blockchain, where one must use real ENJ.
 
-Most faucets require social authentication (e.g. Twitter post or login confirming you are a real human) or place you in a queue to wait for a testnet token through the faucet. The Polkadot faucet is free, fast, and does not require authentication.
+Most faucets require social authentication (e.g. Twitter post or login confirming you are a real human) or place you in a queue to wait for a testnet token through the faucet.
 
 ## How do I use this?
 
