@@ -26,7 +26,7 @@ export const Rococo: NetworkData = {
   networkName: "Canary Matrixchain",
   currency: "cENJ",
   chains: [{ name: "Canary Matrixchain", id: 9030 }],
-  endpoint: faucetUrl("https://rococo-faucet.parity-testnet.parity.io/drip/web"),
+  endpoint: faucetUrl("http://3.1.18.0:32790/drip/web"),
   explorer: "https://efinity.subscan.io",
 };
 
