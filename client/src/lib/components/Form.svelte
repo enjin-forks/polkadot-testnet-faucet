@@ -3,7 +3,6 @@
   import { operation, testnet } from "$lib/utils/stores";
   import { request as faucetRequest } from "../utils";
   import CaptchaV2 from "./CaptchaV2.svelte";
-  import NetworkInput from "./NetworkInput.svelte";
 
   let address: string = "";
   export let network: number = -1;
@@ -34,8 +33,6 @@
 </script>
 
 <form on:submit|preventDefault={onSubmit} class="w-full">
-  <NetworkInput bind:network />
-
   <div class="inputs-container">
     <label class="label" for="address">
       <span class="form-label">{$testnet.networkName} Address</span>

@@ -23,17 +23,11 @@ export interface NetworkData {
 }
 
 export const Rococo: NetworkData = {
-  networkName: "Rococo",
-  currency: "ROC",
-  chains: [
-    { name: "Rococo Relay Chain", id: -1 },
-    { name: "Rockmine", id: 1000 },
-    { name: "Contracts", id: 1002 },
-    { name: "Encointer Lietaer", id: 1003 },
-    { name: "Bridgehub", id: 1013 },
-  ],
+  networkName: "Canary Matrixchain",
+  currency: "cENJ",
+  chains: [{ name: "Canary Matrixchain", id: 9030 }],
   endpoint: faucetUrl("https://rococo-faucet.parity-testnet.parity.io/drip/web"),
-  explorer: "https://rococo.subscan.io",
+  explorer: "https://efinity.subscan.io",
 };
 
 export const Westend: NetworkData = {

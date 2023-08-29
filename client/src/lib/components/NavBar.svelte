@@ -27,7 +27,6 @@
     </div>
   </div>
   <div class="flex-none">
-    <NetworkDropdown {currentNetwork} />
     <a class="questions-btn" href="#faq"> &#8594; Questions? </a>
   </div>
 </div>

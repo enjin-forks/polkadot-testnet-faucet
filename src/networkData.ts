@@ -19,18 +19,14 @@ export interface NetworkData {
 const rococo: NetworkData = {
   balanceCap: 1000,
   chains: [
-    { name: "Rococo Relay Chain", id: -1 },
-    { name: "Rockmine", id: 1000 },
-    { name: "Contracts", id: 1002 },
-    { name: "Encointer Lietaer", id: 1003 },
-    { name: "Bridgehub", id: 1013 },
+    { name: "Canary Matrixchain", id: 9030 }
   ],
-  currency: "ROC",
-  decimals: 12,
+  currency: "cENJ",
+  decimals: 18,
   dripAmount: "100",
-  explorer: "https://rococo.subscan.io",
-  networkName: "Rococo",
-  rpcEndpoint: "wss://rococo-rpc.polkadot.io/",
+  explorer: "https://efinity.subscan.io",
+  networkName: "Canary Matrixchain",
+  rpcEndpoint: "wss://rpc.matrix.canary.enjin.io/",
 };
 
 const wococo: NetworkData = {

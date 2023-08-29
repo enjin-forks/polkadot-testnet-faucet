@@ -7,7 +7,7 @@
     "build": "tsc",
     "build:docker": "docker build -t polkadot-testnet-faucet .",
     "dev": "nodemon -- src/start.ts",
-    "dev:db": "docker run -e 'POSTGRESQL_EXTRA_FLAGS=-c log_statement=all' -e 'POSTGRESQL_PASSWORD=postgres' -e 'POSTGRESQL_DATABASE=faucet' -v \"$(pwd)/data:/bitnami/postgresql\" -p 5432:5432 bitnami/postgresql:15",
+    "dev:db": "docker run -e 'POSTGRESQL_EXTRA_FLAGS=-c log_statement=all' -e 'POSTGRESQL_PASSWORD=postgres' -e 'POSTGRESQL_DATABASE=faucet' -p 5432:5432 bitnami/postgresql:15",
     "fix": "yarn lint:fix && yarn format:fix",
     "format": "prettier ./src ./client/src ./client/tests --check",
     "format:fix": "prettier ./src ./client/src ./client/tests --write",
