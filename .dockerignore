@@ -6,4 +6,5 @@
 !yarn.lock
 !tsconfig.json
 !env.*.config.json
+!.env
 !src
