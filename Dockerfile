@@ -24,7 +24,6 @@ COPY ./package.json ./yarn.lock ./
 RUN yarn --frozen-lockfile
 
 COPY . .
-COPY .env .env
 RUN yarn build
 
 CMD yarn migrations:run && yarn start
