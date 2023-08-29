@@ -21,7 +21,7 @@ services:
     depends_on:
       - database
     ports:
-      - "5555:5555"
+      - "32791:5555"
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
