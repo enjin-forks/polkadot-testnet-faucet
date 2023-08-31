@@ -18,9 +18,7 @@ export interface NetworkData {
 
 const rococo: NetworkData = {
   balanceCap: 1000,
-  chains: [
-    { name: "Canary Matrixchain", id: 9030 }
-  ],
+  chains: [{ name: "Canary Matrixchain", id: 9030 }],
   currency: "cENJ",
   decimals: 18,
   dripAmount: "100",
