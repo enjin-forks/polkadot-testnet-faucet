@@ -82,12 +82,11 @@ export class PolkadotActions {
 
   public async getAccountBalance(address: string): Promise<number> {
     const { data } = await polkadotApi.query.system.account(address);
-
     const { free: balanceFree } = data;
 
     return balanceFree
       .toBn()
-      .div(new BN(10 ** networkData.decimals))
+      .div((new BN(10).pow(new BN(networkData.decimals))))
       .toNumber();
   }
 
