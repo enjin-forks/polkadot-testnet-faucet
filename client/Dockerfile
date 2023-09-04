@@ -17,7 +17,6 @@ COPY --from=build /app/package.json /app/yarn.lock ./
 
 RUN yarn --prod
 
-COPY .env ./
 COPY --from=build /app/build .
 
 CMD [ "node", "./index.js" ]
