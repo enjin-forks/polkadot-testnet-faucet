@@ -4,12 +4,18 @@ import { createTestKeyring } from "@polkadot/keyring";
 import { WsProvider } from "@polkadot/rpc-provider";
 import { BN } from "@polkadot/util";
 import { randomAsU8a } from "@polkadot/util-crypto";
+import crypto from "crypto";
 import Joi from "joi";
+import { Repository } from "typeorm";
+
+import { Drip } from "src/db/entity/Drip";
+import { drip } from "src/test/webhookHelpers";
 
 import { getLatestMessage, postMessage } from "./test/matrixHelpers";
-import { E2ESetup, setup, teardown } from "./test/setupE2E";
+import { destroyDataSource, E2ESetup, getDataSource, setup, teardown } from "./test/setupE2E";
 
 const randomAddress = () => createTestKeyring().addFromSeed(randomAsU8a(32)).address;
+const sha256 = (x: string) => crypto.createHash("sha256").update(x, "utf8").digest("hex");
 
 describe("Faucet E2E", () => {
   const PARACHAIN_ID = 1000; // From the zombienet config.
@@ -18,6 +24,7 @@ describe("Faucet E2E", () => {
   let matrixUrl: string;
   let webEndpoint: string;
   let e2eSetup: E2ESetup;
+  let dripRepository: Repository<Drip>;
 
   const polkadotApi = new ApiPromise({
     // Zombienet relaychain node.
@@ -45,12 +52,24 @@ describe("Faucet E2E", () => {
 
     await polkadotApi.isReady;
     await parachainApi.isReady;
-  });
+
+    console.log("Zombienet: done");
+
+    const AppDataSource = await getDataSource();
+    dripRepository = AppDataSource.getRepository(Drip);
+
+    console.log("beforeAll: done");
+  }, 100_000);
 
   afterAll(async () => {
     await polkadotApi.disconnect();
     await parachainApi.disconnect();
+    await destroyDataSource();
     if (e2eSetup) teardown(e2eSetup);
+  });
+
+  afterEach(async () => {
+    await dripRepository.clear();
   });
 
   test("The bot responds to the !balance message", async () => {
@@ -166,15 +185,7 @@ describe("Faucet E2E", () => {
     const userAddress = randomAddress();
     const initialBalance = await getUserBalance(userAddress);
 
-    const result = await validatedFetch<{
-      hash: string;
-    }>(`${webEndpoint}/drip/web`, Joi.object({ hash: Joi.string() }), {
-      init: {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: userAddress, recaptcha: "anything goes" }),
-      },
-    });
+    const result = await drip(webEndpoint, userAddress);
 
     expect(result.hash).toBeTruthy();
     await until(
@@ -189,15 +200,7 @@ describe("Faucet E2E", () => {
     const userAddress = randomAddress();
     const initialBalance = await getUserBalance(userAddress, parachainApi);
 
-    const result = await validatedFetch<{
-      hash: string;
-    }>(`${webEndpoint}/drip/web`, Joi.object({ hash: Joi.string() }), {
-      init: {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: userAddress, recaptcha: "anything goes", parachain_id: "1000" }),
-      },
-    });
+    const result = await drip(webEndpoint, userAddress, "1000");
 
     expect(result.hash).toBeTruthy();
     await until(
@@ -211,18 +214,36 @@ describe("Faucet E2E", () => {
   test("The web endpoint fails on wrong parachain", async () => {
     const userAddress = randomAddress();
 
-    const promise = validatedFetch<{
-      hash: string;
-    }>(`${webEndpoint}/drip/web`, Joi.object({ hash: Joi.string() }), {
-      init: {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: userAddress, recaptcha: "anything goes", parachain_id: "100" }),
-      },
-    });
+    const promise = drip(webEndpoint, userAddress, "100");
     await expect(promise).rejects.toThrow();
     await expect(promise).rejects.toMatchObject({
       message: expect.stringMatching("Parachain invalid. Be sure to set a value between 1000 and 9999"),
     });
+  });
+
+  test("Faucet drips to a user that has requested a drip 30h ago", async () => {
+    const userAddress = randomAddress();
+
+    const oldDrip = new Drip();
+    oldDrip.addressSha256 = sha256(userAddress);
+    oldDrip.timestamp = new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString();
+    dripRepository.insert(oldDrip);
+
+    const result = await drip(webEndpoint, userAddress);
+
+    expect(result.hash).toBeTruthy();
+  });
+
+  test("Web faucet doesn't drip to address that has requested a drip 5h ago", async () => {
+    const userAddress = randomAddress();
+
+    const oldDrip = new Drip();
+    oldDrip.addressSha256 = sha256(userAddress);
+    oldDrip.timestamp = new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString();
+    await dripRepository.insert(oldDrip);
+
+    await expect(drip(webEndpoint, userAddress)).rejects.toThrow(
+      "Requester has reached their daily quota. Only request once per day",
+    );
   });
 });

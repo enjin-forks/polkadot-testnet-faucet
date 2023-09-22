@@ -19,7 +19,7 @@ export async function saveDrip(opts: { username?: string; addr: string }) {
 export async function hasDrippedToday(opts: { username?: string; addr: string }): Promise<boolean> {
   let qb = dripRepository.createQueryBuilder("drip");
   if (opts.username) {
-    qb = qb.where("drip.usernameSha256 = :usernameSha256 or drip.addressSha256 = :addressSha256", {
+    qb = qb.where("(drip.usernameSha256 = :usernameSha256 or drip.addressSha256 = :addressSha256)", {
       usernameSha256: sha256(opts.username),
       addressSha256: sha256(opts.addr),
     });
@@ -27,8 +27,8 @@ export async function hasDrippedToday(opts: { username?: string; addr: string })
     qb = qb.where("drip.addressSha256 = :addressSha256", { addressSha256: sha256(opts.addr) });
   }
   const res = await qb
-    .andWhere("drip.timestamp > to_timestamp(:minAllowedTs)", {
-      minAllowedTs: Math.round(Date.now() / 1000) - 60 * 60 * HOURS_SPAN,
+    .andWhere("drip.timestamp > :minAllowedTs", {
+      minAllowedTs: new Date(Date.now() - HOURS_SPAN * 60 * 60 * 1000).toISOString(),
     })
     .getOne();
 
