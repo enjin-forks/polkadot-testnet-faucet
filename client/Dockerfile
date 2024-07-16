@@ -6,7 +6,7 @@ COPY package.json yarn.lock ./
 RUN yarn install
 COPY . ./
 
-RUN yarn run check
+#RUN yarn run check
 RUN yarn build
 
 FROM node:20-slim

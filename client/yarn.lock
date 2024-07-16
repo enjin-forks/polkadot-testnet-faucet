@@ -2444,6 +2444,7 @@ __metadata:
     svelte-check: "npm:^3.0.1"
     svelte-markdown: "npm:^0.2.3"
     svelte-meta-tags: "npm:^2.7.0"
+    svelte-preprocess: "npm:^6.0.2"
     tailwindcss: "npm:^3.2.7"
     tslib: "npm:^2.4.1"
     typescript: "npm:^4.9.3"
@@ -2553,6 +2554,46 @@ __metadata:
     typescript:
       optional: true
   checksum: 10c0/ec4fd22320eba631d7abc2641f542ec7e10f8a1862eb522fb5e12651c1f541d048c64191d770841a48793b8051b5bf6b09307505d66d6bb9786ba6807918057d
+  languageName: node
+  linkType: hard
+
+"svelte-preprocess@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "svelte-preprocess@npm:6.0.2"
+  peerDependencies:
+    "@babel/core": ^7.10.2
+    coffeescript: ^2.5.1
+    less: ^3.11.3 || ^4.0.0
+    postcss: ^7 || ^8
+    postcss-load-config: ">=3"
+    pug: ^3.0.0
+    sass: ^1.26.8
+    stylus: ">=0.55"
+    sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
+    svelte: ^4.0.0 || ^5.0.0-next.100 || ^5.0.0
+    typescript: ^5.0.0
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    coffeescript:
+      optional: true
+    less:
+      optional: true
+    postcss:
+      optional: true
+    postcss-load-config:
+      optional: true
+    pug:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    typescript:
+      optional: true
+  checksum: 10c0/31569a0f773f61ef9d51f221aee83ea30b7e73e71d61a5e0364fb15041cbd2b9c61ef94b9bf4ae94aa8dcdc2bd35a5d4a56393acdd35d278f7f1216a5d04b0c9
   languageName: node
   linkType: hard
 
